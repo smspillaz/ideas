@@ -3,7 +3,7 @@
 In a normal LSTM each layer in time only depends on the previous layer at the previous
 timestep.
 
-   o <-- o <-- o
+    o <-- o <-- o
 
 In principle, an LSTM should be able to remember long term dependencies through the
 operation of its forget gates, but its memory is still effectively limited by the
@@ -12,11 +12,11 @@ vanishing gradient problem but don't actually eliminate it alltogether.
 
 One thing that LSTMs do allow us to do is stack layers when processing the sequence, eg:
 
-   o <-- o <-- o
-   ^     ^     ^
-   |     |     |
-   |     |     |
-   o <-- o <-- o
+    o <-- o <-- o
+    ^     ^     ^
+    |     |     |
+    |     |     |
+    o <-- o <-- o
 
 In principle this should allow us to extract more information from the hidden states by
 encoding non-linear features into them (in the sense that we have hidden-states of hidden
@@ -26,11 +26,11 @@ In the attention model we take all the hidden states, then multiply each by some
 weights and softmax the result into a probability distribution such that we know
 which states to pay attention to the most when doing some task over all the hidden states:
 
-   h_1 --|
-         |
-   h_2 --(x) Wa => softmax([a_1, a_2, a_3])
-         |
-   h_3 --|
+    h_1 --|
+          |
+    h_2 --(x) Wa => softmax([a_1, a_2, a_3])
+          |
+    h_3 --|
 
 This allows us to "shortcut" back to the various hidden states through the attention operator
 without having gradients be lost in the backpropagation phase for very long term dependencies. This
