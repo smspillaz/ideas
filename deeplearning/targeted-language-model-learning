@@ -1,0 +1,29 @@
+# Problem
+
+Right now we train language models by looking at and backpropagating from the same training data
+over and over again in order to reduce overall perplexity, or at least perplexity in a mini-batch.
+
+There are a few issues with this approach:
+
+ (a) It is probably very inefficient, because you might be learning gradients on parts of the function
+     that don't really need optimization (for instance a sentence already has fairly low perplexity and
+     optimizing the network on that sentence produces only a marginal perplexity gain).
+ (b) By treating all training signals equally, you end up not really learning much about rare words
+     or rare sentence forms.
+
+What would be nice is if we only focus our optimization efforts on sentences where we're uncertain or
+very wrong in our predictions. We can do this by sampling additional data around areas of high perplexity.
+
+# Proposed Solution
+
+We have two datasets, some sort of main corpus that we're trying to read and minimize perplexity over
+and another corpus where we can learn additional information about words. The size of the second corpus is
+much larger than the first. The second corpus could contain something like definitions of words from
+Wiktionary, or even sentences from Wikipedia containing the word.
+
+There is some cost for trying to learn more about a word. Therefore, the tradeoff has to be
+"worth it" in order to sample the additional sentences about the word - eg, it needs to reduce the
+perplexity.
+
+We can make this choice using reinforcement learning for example - by taking the reward as the improvement
+in perplexity, but then balancing that against the cost of learning new vocabulary from the supplementary corpus.
